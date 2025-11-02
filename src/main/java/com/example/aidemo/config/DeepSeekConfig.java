@@ -4,6 +4,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
+import org.springframework.ai.openai.api.OpenAiImageApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,5 +53,14 @@ public class DeepSeekConfig {
     @Bean
     public ChatClient chatClient(OpenAiChatModel chatModel) {
         return ChatClient.builder(chatModel).build();
+    }
+
+    @Bean
+    public OpenAiImageApi openAiImageApi() {
+        return new OpenAiImageApi(baseUrl, apiKey,
+                RestClient.builder().baseUrl(baseUrl)
+                        .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
+                        .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+        );
     }
 }
